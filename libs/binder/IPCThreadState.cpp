@@ -376,6 +376,13 @@ int IPCThreadState::getCallingUid() const
     return mCallingUid;
 }
 
+#ifdef LGEJPN_JB_SYMS
+//extern "C" int _ZN7android14IPCThreadState13getCallingUidEv() {
+int IPCThreadState::getCallingUid(){
+    return mCallingUid;
+}
+#endif
+
 int64_t IPCThreadState::clearCallingIdentity()
 {
     int64_t token = ((int64_t)mCallingUid<<32) | mCallingPid;

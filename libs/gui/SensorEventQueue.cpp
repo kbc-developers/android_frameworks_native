@@ -132,6 +132,12 @@ status_t SensorEventQueue::enableSensor(int32_t handle, int32_t samplingPeriodUs
                                                  us2ns(maxBatchReportLatencyUs), reservedFlags);
 }
 
+#ifdef LGEJPN_JB_SYMS
+status_t SensorEventQueue::enableSensor(int handle,int reservedFlags) const {
+    return mSensorEventConnection->enableDisable((int32_t)handle,true, 0, 0, false);
+}
+#endif
+
 status_t SensorEventQueue::flush() const {
     return mSensorEventConnection->flush();
 }

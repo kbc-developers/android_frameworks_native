@@ -925,4 +925,15 @@ status_t Surface::unlockAndPost()
     return err;
 }
 
+#ifdef LGEJPN_JB_SYMS
+extern "C"
+{
+void _ZN7android7Surface14readFromParcelERKNS_6ParcelE(void*)
+{
+}
+void _ZN7android7Surface13writeToParcelERKNS_2spIS0_EEPNS_6ParcelE(void*)
+{
+}
+}
+#endif
 }; // namespace android

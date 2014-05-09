@@ -41,7 +41,9 @@ public:
 
             int                 getCallingPid() const;
             int                 getCallingUid() const;
-
+#ifdef LGEJPN_JB_SYMS
+            int                 getCallingUid();
+#endif
             void                setStrictModePolicy(int32_t policy);
             int32_t             getStrictModePolicy() const;
 

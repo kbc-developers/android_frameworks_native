@@ -75,7 +75,9 @@ public:
                           int reservedFlags) const;
     status_t disableSensor(int32_t handle) const;
     status_t flush() const;
-
+#ifdef LGEJPN_JB_SYMS
+    status_t enableSensor(int handle,int reservedFlags) const; 
+#endif
 private:
     sp<Looper> getLooper() const;
     sp<ISensorEventConnection> mSensorEventConnection;
