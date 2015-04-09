@@ -65,7 +65,9 @@ public:
      * controlled by the application. This flag is used at connect time.
      */
     Surface(const sp<IGraphicBufferProducer>& bufferProducer, bool controlledByApp = false);
-
+#ifdef JB_ONESEG_SYMBOLS	
+	Surface(const sp<IGraphicBufferProducer>& bufferProducer);
+#endif
     /* getIGraphicBufferProducer() returns the IGraphicBufferProducer this
      * Surface was created with. Usually it's an error to use the
      * IGraphicBufferProducer while the Surface is connected.

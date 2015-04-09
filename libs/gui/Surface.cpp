@@ -93,6 +93,57 @@ Surface::Surface(
     mDequeuedOnce = false;
 #endif
 }
+#ifdef JB_ONESEG_SYMBOLS
+Surface::Surface(
+        const sp<IGraphicBufferProducer>& bufferProducer)
+    : mGraphicBufferProducer(bufferProducer)
+{
+    // Initialize the ANativeWindow function pointers.
+    ANativeWindow::setSwapInterval  = hook_setSwapInterval;
+    ANativeWindow::dequeueBuffer    = hook_dequeueBuffer;
+    ANativeWindow::cancelBuffer     = hook_cancelBuffer;
+    ANativeWindow::queueBuffer      = hook_queueBuffer;
+    ANativeWindow::query            = hook_query;
+    ANativeWindow::perform          = hook_perform;
+
+    ANativeWindow::dequeueBuffer_DEPRECATED = hook_dequeueBuffer_DEPRECATED;
+    ANativeWindow::cancelBuffer_DEPRECATED  = hook_cancelBuffer_DEPRECATED;
+    ANativeWindow::lockBuffer_DEPRECATED    = hook_lockBuffer_DEPRECATED;
+    ANativeWindow::queueBuffer_DEPRECATED   = hook_queueBuffer_DEPRECATED;
+
+    const_cast<int&>(ANativeWindow::minSwapInterval) = 0;
+    const_cast<int&>(ANativeWindow::maxSwapInterval) = 1;
+
+    mReqWidth = 0;
+    mReqHeight = 0;
+    mReqFormat = 0;
+    mReqUsage = 0;
+#ifdef QCOM_BSP_LEGACY
+    mReqSize = 0;
+#endif
+    mTimestamp = NATIVE_WINDOW_TIMESTAMP_AUTO;
+    mCrop.clear();
+#ifdef QCOM_BSP
+    mDirtyRect.clear();
+#endif
+    mScalingMode = NATIVE_WINDOW_SCALING_MODE_FREEZE;
+    mTransform = 0;
+    mStickyTransform = 0;
+    mDefaultWidth = 0;
+    mDefaultHeight = 0;
+    mUserWidth = 0;
+    mUserHeight = 0;
+    mTransformHint = 0;
+    mConsumerRunningBehind = false;
+    mConnectedToCpu = false;
+    mProducerControlledByApp = false;
+    mSwapIntervalZero = false;
+#ifdef SURFACE_SKIP_FIRST_DEQUEUE
+    mDequeuedOnce = false;
+#endif
+}
+#endif
+
 
 Surface::~Surface() {
     if (mConnectedToCpu) {
