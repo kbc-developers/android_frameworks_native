@@ -702,6 +702,13 @@ status_t Parcel::writeDouble(double val)
 
 #endif
 
+#ifdef JB_ONESEG_SYMBOLS
+status_t Parcel::writeIntPtr(intptr_t val)
+{
+    return writeAligned(val);
+}
+#endif
+
 status_t Parcel::writeCString(const char* str)
 {
     return write(str, strlen(str)+1);

@@ -97,6 +97,9 @@ public:
     status_t            writeInt64(int64_t val);
     status_t            writeFloat(float val);
     status_t            writeDouble(double val);
+#ifdef JB_ONESEG_SYMBOLS
+	status_t            writeIntPtr(intptr_t val);
+#endif
     status_t            writeCString(const char* str);
     status_t            writeString8(const String8& str);
     status_t            writeString16(const String16& str);
