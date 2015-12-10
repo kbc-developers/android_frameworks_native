@@ -119,8 +119,10 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
     case SENSOR_TYPE_HEART_RATE: {
         mStringType = SENSOR_STRING_TYPE_HEART_RATE;
         mRequiredPermission = SENSOR_PERMISSION_BODY_SENSORS;
+#if !defined(HAVE_LEGACY_BODY_SENSOR)
         AppOpsManager appOps;
         mRequiredAppOp = appOps.permissionToOpCode(String16(SENSOR_PERMISSION_BODY_SENSORS));
+#endif
         mFlags |= SENSOR_FLAG_ON_CHANGE_MODE;
         } break;
     case SENSOR_TYPE_LIGHT:
@@ -223,10 +225,12 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
         }
         if (halVersion > SENSORS_DEVICE_API_VERSION_1_0 && hwSensor->requiredPermission) {
             mRequiredPermission = hwSensor->requiredPermission;
+#if !defined(HAVE_LEGACY_BODY_SENSOR)
             if (!strcmp(mRequiredPermission, SENSOR_PERMISSION_BODY_SENSORS)) {
                 AppOpsManager appOps;
                 mRequiredAppOp = appOps.permissionToOpCode(String16(SENSOR_PERMISSION_BODY_SENSORS));
             }
+#endif
         }
 
         if (halVersion >= SENSORS_DEVICE_API_VERSION_1_3) {
@@ -267,6 +271,8 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
         }
     }
 
+
+#if !defined(HAVE_LEGACY_BODY_SENSOR)
     if (mRequiredPermission.length() > 0) {
         // If the sensor is protected by a permission we need to know if it is
         // a runtime one to determine whether we can use the permission cache.
@@ -277,6 +283,7 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
                     String16(mRequiredPermission));
         }
     }
+#endif
 }
 
 Sensor::~Sensor()
