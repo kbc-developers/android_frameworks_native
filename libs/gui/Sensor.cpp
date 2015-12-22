@@ -118,6 +118,7 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
         break;
     case SENSOR_TYPE_HEART_RATE: {
         mStringType = SENSOR_STRING_TYPE_HEART_RATE;
+#ifndef NO_SENSOR_PERMISSION_CHECK
         mRequiredPermission = SENSOR_PERMISSION_BODY_SENSORS;
 #ifndef NO_SENSOR_PERMISSION_CHECK
         AppOpsManager appOps;
@@ -223,6 +224,7 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
         if (halVersion > SENSORS_DEVICE_API_VERSION_1_0 && hwSensor->stringType) {
             mStringType = hwSensor->stringType;
         }
+#ifndef NO_SENSOR_PERMISSION_CHECK
         if (halVersion > SENSORS_DEVICE_API_VERSION_1_0 && hwSensor->requiredPermission) {
             mRequiredPermission = hwSensor->requiredPermission;
 #ifndef NO_SENSOR_PERMISSION_CHECK
@@ -232,6 +234,7 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
             }
 #endif
         }
+#endif
 
         if (halVersion >= SENSORS_DEVICE_API_VERSION_1_3) {
             mFlags = static_cast<uint32_t>(hwSensor->flags);
