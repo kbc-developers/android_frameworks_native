@@ -120,7 +120,6 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
         mStringType = SENSOR_STRING_TYPE_HEART_RATE;
 #ifndef NO_SENSOR_PERMISSION_CHECK
         mRequiredPermission = SENSOR_PERMISSION_BODY_SENSORS;
-#ifndef NO_SENSOR_PERMISSION_CHECK
         AppOpsManager appOps;
         mRequiredAppOp = appOps.permissionToOpCode(String16(SENSOR_PERMISSION_BODY_SENSORS));
 #endif
@@ -227,12 +226,10 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
 #ifndef NO_SENSOR_PERMISSION_CHECK
         if (halVersion > SENSORS_DEVICE_API_VERSION_1_0 && hwSensor->requiredPermission) {
             mRequiredPermission = hwSensor->requiredPermission;
-#ifndef NO_SENSOR_PERMISSION_CHECK
             if (!strcmp(mRequiredPermission, SENSOR_PERMISSION_BODY_SENSORS)) {
                 AppOpsManager appOps;
                 mRequiredAppOp = appOps.permissionToOpCode(String16(SENSOR_PERMISSION_BODY_SENSORS));
             }
-#endif
         }
 #endif
 
